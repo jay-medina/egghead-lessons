@@ -19,8 +19,8 @@
     const element = (
       <div className="container">
         <Message msg="hello" />
-        {React.createElement(Message, {msg: 'hello world'})}
-        {React.createElement(Message, {msg: 'goodbye world'})}
+        <Message msg="hello world" />
+        <Message msg="good bye world" />
       </div>
     )
     ReactDOM.render(element, rootEl);
