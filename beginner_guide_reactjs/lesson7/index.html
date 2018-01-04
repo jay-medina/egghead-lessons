@@ -15,13 +15,18 @@
   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
   <script type="text/babel">
     const rootEl = document.getElementById('root');
-    const time = new Date().toLocaleTimeString()
-    const element = <h2>It is {time}</h2>
+    function tick() {
+      const time = new Date().toLocaleTimeString()
+      const element = <h2>It is {time}</h2>
 
-    ReactDOM.render(
-      element, 
-      rootEl
-    );
+      ReactDOM.render(
+        element, 
+        rootEl
+      );
+    }
+
+    tick();
+    setInterval(tick, 1000);
   </script>
 </body>
 
