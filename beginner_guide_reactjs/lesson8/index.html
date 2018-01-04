@@ -35,12 +35,20 @@
   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
   <script type="text/babel">
     const rootEl = document.getElementById('root');
-    const Box = ({style, ...rest}) => (
-      <div className='box box--small' style={{paddingLeft: 20, ...style}} {...rest} />
-    )  
+    const Box = ({style, size = 'small', className='', ...rest}) => {
+      function getClassName() {
+        return `box--${size}`;
+      }
+
+      return (
+        <div className={`box ${getClassName()}`} style={{paddingLeft: 20, ...style}} {...rest} />
+      );
+    }  
     const element = (
       <div>
         <Box style={{backgroundColor: 'lightblue'}}>small box</Box>
+        <Box size="medium" style={{backgroundColor: 'pink'}}>medium box</Box>
+        <Box size="large" style={{backgroundColor: 'orange'}}>large box</Box>
       </div>
     );
 
