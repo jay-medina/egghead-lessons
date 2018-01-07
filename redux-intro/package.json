@@ -4,13 +4,16 @@
   "description": "Lessons from redux videos",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
+    "html-webpack-plugin": "^2.30.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "redux": "^3.7.2",
