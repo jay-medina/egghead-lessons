@@ -1,14 +1,15 @@
+const path = require("path");
+
 module.exports = {
   entry: {
-    app: "./app/main.tsx"
+    app: "./src/index.ts"
   },
   output: {
-    path: "dist",
+    path: path.resolve(__dirname, "dist"),
     filename: "index.js"
   },
   resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
-    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js", ".jsx"]
   },
   devServer: {
     inline: true,
@@ -21,12 +22,6 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "ts-loader"
-      }
-    ],
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: "source-map-loader"
       }
     ]
   }
