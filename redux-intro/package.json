@@ -6,20 +6,36 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "test": "jest",
+    "watch:test": "jest --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^22.0.1",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^22.1.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "redux": "^3.7.2",
+    "ts-jest": "^22.0.1",
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true
   }
 }
