@@ -25,14 +25,22 @@
             There has been { state.eventCount } events
           </p>
           <p>
-            <button>👾</button>
+            <button onClick={onButtonClick}>👾</button>
           </p>
           <p>You typed: {state.username}</p>
           <p>
-            <input />
+            <input onChange={onInputChange} />
           </p>
         </div>
       )
+    }
+
+    function onButtonClick() {
+      setState({ eventCount: state.eventCount + 1});
+    }
+
+    function onInputChange(e) {
+      setState({ username: e.target.value });
     }
 
     function setState(newState) {
