@@ -17,11 +17,12 @@
   <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
   <script type="text/babel">
     const rootEl = document.getElementById('root');
+    const state = {eventCount: 0, username: '' }
     function App() {
       return (
         <div>
           <p>
-            There has been { state. eventCount } events
+            There has been { state.eventCount } events
           </p>
           <p>
             <button>👾</button>
@@ -34,10 +35,17 @@
       )
     }
 
-    ReactDOM.render(
-      <App />, 
-      rootEl
-    );
+    function setState(newState) {
+      Object.assign(state, newState)
+      renderApp()
+    }
+    function renderApp() {
+      ReactDOM.render(
+        <App />, 
+        rootEl
+      );
+    }
+    renderApp();
 
   </script>
 </body>
