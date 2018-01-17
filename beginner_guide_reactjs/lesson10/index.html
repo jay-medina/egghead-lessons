@@ -25,15 +25,27 @@
       margin: 5,
       width: 200
     }
-    function StopWatch() {
-      return (
-        <div style={{textAlign: 'center'}}>
-          <label style={{fontSize: '5em', display: 'block'}}>{lapse}ms</label>
-          <button style={buttonStyles}>Start</button>
-          <button style={buttonStyles}>Clear</button>
-        </div>
-      )
+
+    class StopWatch extends React.Component {
+      state = { lapse: 0, running: false }
+      render() {
+        const { lapse, running } = this.state;
+        return (
+          <div style={{textAlign: 'center'}}>
+            <label style={{fontSize: '5em', display: 'block'}}>{lapse}ms</label>
+            <button onClick={this.handleRunClick} style={buttonStyles}>{running? 'Stop': 'Start'}</button>
+            <button onClick={this.onClearClick} style={buttonStyles}>Clear</button>
+          </div>
+        )
+      }
+      handleRunClick = () => {
+        this.setState({ lapse: 10, running: true});
+      }
+      onClearClick = () => {
+        this.setState({ lapse: 0, running: false});
+      }
     }
+    
     const element = <StopWatch />
 
       ReactDOM.render(
