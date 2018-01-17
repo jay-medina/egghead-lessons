@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Beginner React</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.0.0-rc.3/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.0.0-rc.3/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  <script type="text/babel">
+    const rootEl = document.getElementById('root');
+    const buttonStyles = {
+      border: '1px solid #ccc',
+      background: '#FFF',
+      fontSize: '2em',
+      padding: 15,
+      margin: 5,
+      width: 200
+    }
+
+    class StopWatch extends React.Component {
+      state = { lapse: 0, running: false }
+      render() {
+        const { lapse, running } = this.state;
+        return (
+          <div style={{textAlign: 'center'}}>
+            <label style={{fontSize: '5em', display: 'block'}}>{lapse}ms</label>
+            <button onClick={this.handleRunClick} style={buttonStyles}>{running? 'Stop': 'Start'}</button>
+            <button onClick={this.onClearClick} style={buttonStyles}>Clear</button>
+          </div>
+        )
+      }
+      handleRunClick = () => {
+        this.setState(state => {
+          if(state.running) {
+            clearInterval(this.interval);
+          }
+          else {
+            const startTime = Date.now() - this.state.lapse
+            
+            this.interval = setInterval(() => {
+              this.setState({ lapse: Date.now() - startTime })
+            }, 0);
+          }
+          return {running: !state.running}
+        })
+      }
+      onClearClick = () => {
+        this.setState({ lapse: 0, running: false});
+        clearInterval(this.interval);
+      }
+    }
+    
+    const element = <StopWatch />
+
+      ReactDOM.render(
+        element, 
+        rootEl
+      );
+
+  </script>
+</body>
+
+</html>
