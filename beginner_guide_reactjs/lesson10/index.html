@@ -39,10 +39,23 @@
         )
       }
       handleRunClick = () => {
-        this.setState({ lapse: 10, running: true});
+        this.setState(state => {
+          if(state.running) {
+            clearInterval(this.interval);
+          }
+          else {
+            const startTime = Date.now() - this.state.lapse
+            
+            this.interval = setInterval(() => {
+              this.setState({ lapse: Date.now() - startTime })
+            }, 0);
+          }
+          return {running: !state.running}
+        })
       }
       onClearClick = () => {
         this.setState({ lapse: 0, running: false});
+        clearInterval(this.interval);
       }
     }
     
