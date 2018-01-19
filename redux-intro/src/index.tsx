@@ -1,29 +1,22 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 import { createStore } from 'redux';
 import counterReducer from './counter/reducer';
+import Counter from './counter';
 
 const store = createStore(counterReducer);
 
-// gets the current state of the store
-console.log(store.getState());
-
-// dispatch - fires an action
-store.dispatch({ type: 'INCREMENT' });
-
-// updated state
-
-console.log(store.getState());
-
-// subscribes to changes
 const render = () => {
-  ReactDOM.render(<div>hello</div>, document.getElementById('root'));
+  ReactDOM.render(
+    <Counter
+      state={store.getState()}
+      onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
+      onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
+    />,
+    document.getElementById('root')
+  );
 };
 
 store.subscribe(render);
-
-document.addEventListener('click', () => {
-  store.dispatch({ type: 'INCREMENT' });
-});
 
 render();
