@@ -1,3 +1,5 @@
+import ReactDOM from 'react-dom';
+import React from 'react';
 import { createStore } from 'redux';
 import counterReducer from './counter/reducer';
 
@@ -15,12 +17,10 @@ console.log(store.getState());
 
 // subscribes to changes
 const render = () => {
-  document.body.innerText = '' + store.getState();
+  ReactDOM.render(<div>hello</div>, document.getElementById('root'));
 };
 
-store.subscribe(() => {
-  render();
-});
+store.subscribe(render);
 
 document.addEventListener('click', () => {
   store.dispatch({ type: 'INCREMENT' });
