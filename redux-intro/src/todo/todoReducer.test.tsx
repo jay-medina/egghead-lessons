@@ -1,24 +1,5 @@
-import { toggleTodo, todos, Todo, TodoAction } from './todoReducer';
+import { todos, Todo, TodoAction } from './todoReducer';
 
-describe('toggleTodo', () => {
-  it('should toggle the todo item to completed', () => {
-    const todoBefore = {
-      id: 0,
-      text: 'Learn Redux',
-      completed: false
-    };
-
-    const todoAfter = {
-      id: 0,
-      text: 'Learn Redux',
-      completed: true
-    };
-
-    expect(toggleTodo(todoBefore)).toEqual(todoAfter);
-  });
-});
-
-describe('todos', () => {
   describe('adding a todo', () => {
     it('should add the todo to the state', () => {
       const stateBefore: Todo[] = [];
@@ -37,4 +18,37 @@ describe('todos', () => {
       ]);
     });
   });
-});
+
+  describe('toggleTodo', () => {
+    let stateBefore: Todo[];
+    beforeEach(() => {
+      stateBefore = [
+        {
+          id: 0,
+          text: 'Learn Redux',
+          completed: false,
+        },
+        {
+          id: 1,
+          text: 'Learn Elm',
+          completed: false,
+        }
+      ];
+    });
+    it('should toggle the specified todo', () => {
+      expect(
+        todos(stateBefore, { type: 'TOGGLE_TODO', id: 1})
+      ).toEqual([
+        {
+          id: 0,
+          text: 'Learn Redux',
+          completed: false,
+        },
+        {
+          id: 1,
+          text: 'Learn Elm',
+          completed: true,
+        }
+      ])
+    });
+  });
