@@ -6,41 +6,47 @@ export interface Todo {
   completed: boolean;
 }
 
-interface AddTodoAction extends AnyAction {
+interface AddTodoAction {
   type: 'ADD_TODO';
   id: number;
   text: string;
 }
 
-interface ToggleTodoAction extends AnyAction {
+interface ToggleTodoAction {
   type: 'TOGGLE_TODO';
   id: number;
 }
 
-export type TodoAction = AddTodoAction | ToggleTodoAction | AnyAction;
+export type TodoAction = AddTodoAction | ToggleTodoAction;
 
-export const todos = (state: Todo[] = [], action: TodoAction) => {
+function todo(state: Todo | null, action: TodoAction) {
   switch (action.type) {
     case 'ADD_TODO':
-      return [
-        ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completed: false
-        }
-      ];
+      return {
+        id: action.id,
+        text: action.text,
+        completed: false
+      };
     case 'TOGGLE_TODO':
-      return state.map(todo => {
-        const toggleAction = action as ToggleTodoAction;
-        if (todo.id === toggleAction.id) {
-          return {
-            ...todo,
-            completed: !todo.completed
-          };
-        }
-        return todo;
-      });
+      const toggleState = state as Todo;
+      if (toggleState.id === action.id) {
+        return {
+          ...toggleState,
+          completed: !toggleState.completed
+        };
+      }
+      return toggleState;
+    default:
+      return state as Todo;
+  }
+}
+
+export const todos: Reducer<Todo[]> = (state = [], action: TodoAction | AnyAction) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, todo(null, action as AddTodoAction)];
+    case 'TOGGLE_TODO':
+      return state.map(t => todo(t, action as ToggleTodoAction));
     default:
       return state;
   }
