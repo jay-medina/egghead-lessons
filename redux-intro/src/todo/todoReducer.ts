@@ -41,7 +41,7 @@ function todo(state: Todo | null, action: TodoAction) {
   }
 }
 
-export const todos: Reducer<Todo[]> = (state = [], action: TodoAction | AnyAction) => {
+export const todos = (state: Todo[] = [], action: TodoAction | AnyAction) => {
   switch (action.type) {
     case 'ADD_TODO':
       return [...state, todo(null, action as AddTodoAction)];
