@@ -1,20 +1,22 @@
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
-import { createStore } from 'redux';
-import counterReducer from './counter/reducer';
-import Counter from './counter';
+import { createStore, combineReducers } from 'redux';
+import { todos, visibilityFilter, Todo } from './todo';
 
-const store = createStore(counterReducer);
+export interface TodoAppState {
+  todos?: Todo[];
+  visibilityFilter?: string;
+}
+
+const todoReducer = combineReducers<TodoAppState>({
+  todos,
+  visibilityFilter
+});
+
+const store = createStore(todoReducer);
 
 const render = () => {
-  ReactDOM.render(
-    <Counter
-      state={store.getState()}
-      onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
-      onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
-    />,
-    document.getElementById('root')
-  );
+  ReactDOM.render(<div>hello</div>, document.getElementById('root'));
 };
 
 store.subscribe(render);
