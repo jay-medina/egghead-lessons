@@ -1,4 +1,4 @@
-import { AnyAction, Reducer } from 'redux';
+import { Action } from 'redux';
 
 export interface Todo {
   id: number;
@@ -6,30 +6,32 @@ export interface Todo {
   completed: boolean;
 }
 
-interface AddTodoAction {
+interface AddTodoAction extends Action {
   type: 'ADD_TODO';
   id: number;
   text: string;
 }
 
-interface ToggleTodoAction {
+interface ToggleTodoAction extends Action {
   type: 'TOGGLE_TODO';
   id: number;
 }
 
-export type TodoAction = AddTodoAction | ToggleTodoAction;
+export type TodoAction = AddTodoAction | ToggleTodoAction | Action;
 
 function todo(state: Todo | null, action: TodoAction) {
   switch (action.type) {
     case 'ADD_TODO':
+      const addAction = action as AddTodoAction;
       return {
-        id: action.id,
-        text: action.text,
+        id: addAction.id,
+        text: addAction.text,
         completed: false
       };
     case 'TOGGLE_TODO':
       const toggleState = state as Todo;
-      if (toggleState.id === action.id) {
+      const toggleAction = action as ToggleTodoAction;
+      if (toggleState.id === toggleAction.id) {
         return {
           ...toggleState,
           completed: !toggleState.completed
@@ -41,10 +43,10 @@ function todo(state: Todo | null, action: TodoAction) {
   }
 }
 
-export const todos = (state: Todo[] = [], action: TodoAction | AnyAction) => {
+export const todos = (state: Todo[] = [], action: TodoAction | Action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [...state, todo(null, action as AddTodoAction)];
+      return [...state, todo(null, action)];
     case 'TOGGLE_TODO':
       return state.map(t => todo(t, action as ToggleTodoAction));
     default:
