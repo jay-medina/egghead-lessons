@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Store } from 'redux';
 
 export interface CounterProps {
   state: number;
