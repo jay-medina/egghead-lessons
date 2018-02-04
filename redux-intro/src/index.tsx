@@ -5,8 +5,8 @@ import { todos, visibilityFilter, Todo } from './todo';
 import TodoApp from './todo/components/TodoApp';
 
 export interface TodoAppState {
-  todos?: Todo[];
-  visibilityFilter?: string;
+  todos: Todo[];
+  visibilityFilter: string;
 }
 
 const todoReducer = combineReducers<TodoAppState>({
@@ -17,7 +17,7 @@ const todoReducer = combineReducers<TodoAppState>({
 const store = createStore(todoReducer);
 
 const render = () => {
-  ReactDOM.render(<TodoApp dispatch={store.dispatch} todos={store.getState().todos} />, document.getElementById('root'));
+  ReactDOM.render(<TodoApp dispatch={store.dispatch} {...store.getState()} />, document.getElementById('root'));
 };
 
 store.subscribe(render);

@@ -2,15 +2,28 @@ import React, { Fragment, SyntheticEvent, KeyboardEvent } from 'react';
 import { Todo } from '..';
 import { TodoAction } from '../todoReducer';
 import './todo.css';
+import FilterLink from './FilterLink';
 
 const ENTER_KEY = 13;
 
 export interface TodoAppProps {
   dispatch: (action: TodoAction) => void;
-  todos?: Todo[];
+  todos: Todo[];
+  visibilityFilter: string;
 }
 
 let nextTodoId = 0;
+
+const getVisibleTodos = (todos: Todo[], filter: string) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_COMPLETED':
+      return todos.filter(todo => todo.completed);
+    default:
+      return todos.filter(todo => !todo.completed);
+  }
+};
 
 class TodoApp extends React.Component<TodoAppProps> {
   state = {
@@ -22,6 +35,22 @@ class TodoApp extends React.Component<TodoAppProps> {
         <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.inputVal} />
         <button onClick={this.addTodo}>Add Todo</button>
         <ul>{this.renderTodos()}</ul>
+        <p>
+          Show:{' '}
+          <FilterLink filter="SHOW_ALL" dispatch={this.props.dispatch} currentFilter={this.props.visibilityFilter}>
+            All
+          </FilterLink>{' '}
+          <FilterLink filter="SHOW_ACTIVE" dispatch={this.props.dispatch} currentFilter={this.props.visibilityFilter}>
+            Active
+          </FilterLink>{' '}
+          <FilterLink
+            filter="SHOW_COMPLETED"
+            dispatch={this.props.dispatch}
+            currentFilter={this.props.visibilityFilter}
+          >
+            Completed
+          </FilterLink>
+        </p>
       </Fragment>
     );
   }
@@ -46,23 +75,26 @@ class TodoApp extends React.Component<TodoAppProps> {
   };
 
   private renderTodos() {
-    const { todos = [] } = this.props;
+    const { todos, visibilityFilter } = this.props;
 
-    return todos.map(todo => (
+    return getVisibleTodos(todos, visibilityFilter).map(todo => (
       <li key={todo.id} onClick={() => this.onTodoItemClick(todo)}>
         <span className={this.getTodoClassName(todo)}>{todo.text}</span>
       </li>
     ));
   }
+
   private getTodoClassName(todo: Todo) {
-    return todo.completed ? 'todo__completed' : '';
+    return todo.completed ? 'todo todo__completed' : 'todo';
   }
+
   private onTodoItemClick(todo: Todo) {
     this.props.dispatch({
       type: 'TOGGLE_TODO',
       id: todo.id
     });
   }
+
   private getNextTodoId() {
     const id = nextTodoId;
     nextTodoId += 1;
