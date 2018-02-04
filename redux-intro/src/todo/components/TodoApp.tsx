@@ -1,6 +1,7 @@
 import React, { Fragment, SyntheticEvent, KeyboardEvent } from 'react';
 import { Todo } from '..';
 import { TodoAction } from '../todoReducer';
+import './todo.css';
 
 const ENTER_KEY = 13;
 
@@ -47,7 +48,20 @@ class TodoApp extends React.Component<TodoAppProps> {
   private renderTodos() {
     const { todos = [] } = this.props;
 
-    return todos.map(todo => <li key={todo.id}>{todo.text}</li>);
+    return todos.map(todo => (
+      <li key={todo.id} onClick={() => this.onTodoItemClick(todo)}>
+        <span className={this.getTodoClassName(todo)}>{todo.text}</span>
+      </li>
+    ));
+  }
+  private getTodoClassName(todo: Todo) {
+    return todo.completed ? 'todo__completed' : '';
+  }
+  private onTodoItemClick(todo: Todo) {
+    this.props.dispatch({
+      type: 'TOGGLE_TODO',
+      id: todo.id
+    });
   }
   private getNextTodoId() {
     const id = nextTodoId;
