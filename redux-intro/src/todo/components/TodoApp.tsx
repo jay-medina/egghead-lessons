@@ -3,6 +3,7 @@ import { Todo } from '..';
 import { TodoAction } from '../todoReducer';
 import './todo.css';
 import FilterLink from './FilterLink';
+import TodoList from './TodoList';
 
 const ENTER_KEY = 13;
 
@@ -30,11 +31,13 @@ class TodoApp extends React.Component<TodoAppProps> {
     inputVal: ''
   };
   public render() {
+    const { todos, visibilityFilter } = this.props;
+
     return (
       <Fragment>
         <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.inputVal} />
         <button onClick={this.addTodo}>Add Todo</button>
-        <ul>{this.renderTodos()}</ul>
+        <TodoList todos={getVisibleTodos(todos, visibilityFilter)} onTodoClick={this.onTodoItemClick} />
         <p>
           Show:{' '}
           <FilterLink filter="SHOW_ALL" dispatch={this.props.dispatch} currentFilter={this.props.visibilityFilter}>
@@ -74,26 +77,12 @@ class TodoApp extends React.Component<TodoAppProps> {
     this.setState({ inputVal: '' });
   };
 
-  private renderTodos() {
-    const { todos, visibilityFilter } = this.props;
-
-    return getVisibleTodos(todos, visibilityFilter).map(todo => (
-      <li key={todo.id} onClick={() => this.onTodoItemClick(todo)}>
-        <span className={this.getTodoClassName(todo)}>{todo.text}</span>
-      </li>
-    ));
-  }
-
-  private getTodoClassName(todo: Todo) {
-    return todo.completed ? 'todo todo__completed' : 'todo';
-  }
-
-  private onTodoItemClick(todo: Todo) {
+  private onTodoItemClick = (id: number) => {
     this.props.dispatch({
-      type: 'TOGGLE_TODO',
-      id: todo.id
+      id,
+      type: 'TOGGLE_TODO'
     });
-  }
+  };
 
   private getNextTodoId() {
     const id = nextTodoId;
