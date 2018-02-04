@@ -1,6 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SyntheticEvent, KeyboardEvent } from 'react';
 import { Todo } from '..';
 import { TodoAction } from '../todoReducer';
+
+const ENTER_KEY = 13;
 
 export interface TodoAppProps {
   dispatch: (action: TodoAction) => void;
@@ -16,18 +18,24 @@ class TodoApp extends React.Component<TodoAppProps> {
   public render() {
     return (
       <Fragment>
-        <input onChange={this.onInputChange} value={this.state.inputVal} />
-        <button onClick={this.onButtonClick}>Add Todo</button>
+        <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.inputVal} />
+        <button onClick={this.addTodo}>Add Todo</button>
         <ul>{this.renderTodos()}</ul>
       </Fragment>
     );
   }
 
-  private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  private onKeyUp = (e: KeyboardEvent<any>) => {
+    if (e.keyCode === ENTER_KEY) {
+      this.addTodo();
+    }
+  };
+
+  private onInputChange = (e: SyntheticEvent<HTMLInputElement>) => {
     this.setState({ inputVal: e.currentTarget.value });
   };
 
-  private onButtonClick = () => {
+  private addTodo = () => {
     this.props.dispatch({
       type: 'ADD_TODO',
       text: this.state.inputVal,
