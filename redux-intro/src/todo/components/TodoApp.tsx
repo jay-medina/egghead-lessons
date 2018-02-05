@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
 import { Todo } from '..';
-import { TodoAction } from '../todoReducer';
-import { VisibilityFilterAction } from '../visibilityFilterReducer';
 import './todo.css';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Footer from './Footer';
+import { TodoAppState } from '../..';
+import { Store } from 'redux';
 
 export interface TodoAppProps {
-  dispatch: (action: TodoAction | VisibilityFilterAction) => void;
-  todos: Todo[];
-  visibilityFilter: string;
+  store: Store<TodoAppState>;
 }
 
 let nextTodoId = 0;
@@ -31,19 +29,16 @@ class TodoApp extends React.Component<TodoAppProps> {
     inputVal: ''
   };
   public render() {
-    const { todos, visibilityFilter } = this.props;
+    const { store } = this.props;
+    const { todos, visibilityFilter } = store.getState();
 
     return (
       <Fragment>
         <AddTodo addTodo={this.addTodo} inputVal={this.state.inputVal} onInputChange={this.onInputChange} />
         <TodoList todos={getVisibleTodos(todos, visibilityFilter)} onTodoClick={this.onTodoItemClick} />
-        <Footer onFilterClick={this.onFilterClick} visibilityFilter={visibilityFilter} />
+        <Footer store={store} />
       </Fragment>
     );
-  }
-
-  private onFilterClick = (filter: string) => {
-    this.props.dispatch({ type: 'SET_VISIBILITY_FILTER', filter });
   }
 
   private onInputChange = (value: string) => {
@@ -51,7 +46,7 @@ class TodoApp extends React.Component<TodoAppProps> {
   };
 
   private addTodo = () => {
-    this.props.dispatch({
+    this.props.store.dispatch({
       type: 'ADD_TODO',
       text: this.state.inputVal,
       id: this.getNextTodoId()
@@ -60,7 +55,7 @@ class TodoApp extends React.Component<TodoAppProps> {
   };
 
   private onTodoItemClick = (id: number) => {
-    this.props.dispatch({
+    this.props.store.dispatch({
       id,
       type: 'TOGGLE_TODO'
     });

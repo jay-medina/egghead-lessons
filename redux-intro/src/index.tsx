@@ -16,10 +16,10 @@ const todoReducer = combineReducers<TodoAppState>({
 
 const devtoolExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
-const store = createStore(todoReducer, devtoolExtension && devtoolExtension());
+const store = createStore<TodoAppState>(todoReducer, devtoolExtension && devtoolExtension());
 
 const render = () => {
-  ReactDOM.render(<TodoApp dispatch={store.dispatch} {...store.getState()} />, document.getElementById('root'));
+  ReactDOM.render(<TodoApp store={store} />, document.getElementById('root'));
 };
 
 store.subscribe(render);
