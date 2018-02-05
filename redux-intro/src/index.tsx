@@ -18,10 +18,4 @@ const devtoolExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
 const store = createStore<TodoAppState>(todoReducer, devtoolExtension && devtoolExtension());
 
-const render = () => {
-  ReactDOM.render(<TodoApp store={store} />, document.getElementById('root'));
-};
-
-store.subscribe(render);
-
-render();
+ReactDOM.render(<TodoApp store={store} />, document.getElementById('root'));

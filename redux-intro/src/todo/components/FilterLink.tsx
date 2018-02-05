@@ -41,7 +41,7 @@ class FilterLink extends React.Component<FilterLinkProps> {
   }
   render() {
     const { filter, children, store } = this.props;
-    const state = this.props.store.getState();
+    const state = store.getState();
     return (
       <Link
         active={filter === state.visibilityFilter}

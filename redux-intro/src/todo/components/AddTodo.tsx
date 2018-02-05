@@ -1,11 +1,21 @@
 import React, { Fragment } from 'react';
+import { TodoAppState } from '../..';
+import { Store } from 'redux';
 
 const ENTER_KEY = 13;
 
 export interface AddTodoProps {
-  inputVal: string;
+  value: string;
   onInputChange: (value: string) => void;
-  addTodo: () => void;
+  onClick: () => void;
+}
+
+export interface AddTodoContainerProps {
+  store: Store<TodoAppState>;
+}
+
+export interface AddTodoContainerState {
+  value: string;
 }
 
 const onKeyUp = (keyCode: number, addTodo: () => void) => {
@@ -14,15 +24,56 @@ const onKeyUp = (keyCode: number, addTodo: () => void) => {
   }
 };
 
-const AddTodo: React.SFC<AddTodoProps> = ({ onInputChange, addTodo, inputVal }) => (
+const AddTodo: React.SFC<AddTodoProps> = ({ onInputChange, onClick, value }) => (
   <Fragment>
     <input
       onChange={e => onInputChange(e.currentTarget.value)}
-      onKeyUp={e => onKeyUp(e.keyCode, addTodo)}
-      value={inputVal}
+      onKeyUp={e => onKeyUp(e.keyCode, onClick)}
+      value={value}
     />
-    <button onClick={addTodo}>Add Todo</button>
+    <button onClick={onClick}>Add Todo</button>
   </Fragment>
 );
 
-export default AddTodo;
+let nextTodoId = 0;
+
+class AddTodoContainer extends React.Component<AddTodoContainerProps, AddTodoContainerState> {
+  private unsubscribe = () => {};
+
+  state = {
+    value: ''
+  };
+
+  componentDidMount() {
+    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  render() {
+    return <AddTodo onInputChange={this.onInputChange} value={this.state.value} onClick={this.onClick} />;
+  }
+
+  private onClick = () => {
+    this.props.store.dispatch({
+      type: 'ADD_TODO',
+      text: this.state.value,
+      id: this.getNextTodoId()
+    });
+    this.setState({ value: '' });
+  };
+
+  private onInputChange = (value: string) => {
+    this.setState({ value });
+  };
+
+  private getNextTodoId() {
+    const id = nextTodoId;
+    nextTodoId += 1;
+    return id;
+  }
+}
+
+export default AddTodoContainer;
