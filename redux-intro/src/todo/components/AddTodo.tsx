@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { TodoAction } from '../todoReducer';
 
 const ENTER_KEY = 13;
 let nextTodoId = 0;
@@ -53,7 +54,7 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
   return {
     onClick: (text: string) => {
       dispatch({
