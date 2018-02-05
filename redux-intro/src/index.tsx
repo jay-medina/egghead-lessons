@@ -14,7 +14,9 @@ const todoReducer = combineReducers<TodoAppState>({
   visibilityFilter
 });
 
-const store = createStore(todoReducer);
+const devtoolExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
+
+const store = createStore(todoReducer, devtoolExtension && devtoolExtension());
 
 const render = () => {
   ReactDOM.render(<TodoApp dispatch={store.dispatch} {...store.getState()} />, document.getElementById('root'));
