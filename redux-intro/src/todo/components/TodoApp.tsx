@@ -1,14 +1,14 @@
-import React, { Fragment, SyntheticEvent, KeyboardEvent } from 'react';
+import React, { Fragment } from 'react';
 import { Todo } from '..';
 import { TodoAction } from '../todoReducer';
+import { VisibilityFilterAction } from '../visibilityFilterReducer';
 import './todo.css';
-import FilterLink from './FilterLink';
 import TodoList from './TodoList';
-
-const ENTER_KEY = 13;
+import AddTodo from './AddTodo';
+import Footer from './Footer';
 
 export interface TodoAppProps {
-  dispatch: (action: TodoAction) => void;
+  dispatch: (action: TodoAction | VisibilityFilterAction) => void;
   todos: Todo[];
   visibilityFilter: string;
 }
@@ -35,37 +35,19 @@ class TodoApp extends React.Component<TodoAppProps> {
 
     return (
       <Fragment>
-        <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.inputVal} />
-        <button onClick={this.addTodo}>Add Todo</button>
+        <AddTodo addTodo={this.addTodo} inputVal={this.state.inputVal} onInputChange={this.onInputChange} />
         <TodoList todos={getVisibleTodos(todos, visibilityFilter)} onTodoClick={this.onTodoItemClick} />
-        <p>
-          Show:{' '}
-          <FilterLink filter="SHOW_ALL" dispatch={this.props.dispatch} currentFilter={this.props.visibilityFilter}>
-            All
-          </FilterLink>{' '}
-          <FilterLink filter="SHOW_ACTIVE" dispatch={this.props.dispatch} currentFilter={this.props.visibilityFilter}>
-            Active
-          </FilterLink>{' '}
-          <FilterLink
-            filter="SHOW_COMPLETED"
-            dispatch={this.props.dispatch}
-            currentFilter={this.props.visibilityFilter}
-          >
-            Completed
-          </FilterLink>
-        </p>
+        <Footer onFilterClick={this.onFilterClick} visibilityFilter={visibilityFilter} />
       </Fragment>
     );
   }
 
-  private onKeyUp = (e: KeyboardEvent<any>) => {
-    if (e.keyCode === ENTER_KEY) {
-      this.addTodo();
-    }
-  };
+  private onFilterClick = (filter: string) => {
+    this.props.dispatch({ type: 'SET_VISIBILITY_FILTER', filter });
+  }
 
-  private onInputChange = (e: SyntheticEvent<HTMLInputElement>) => {
-    this.setState({ inputVal: e.currentTarget.value });
+  private onInputChange = (value: string) => {
+    this.setState({ inputVal: value });
   };
 
   private addTodo = () => {
