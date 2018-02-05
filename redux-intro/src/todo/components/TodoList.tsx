@@ -1,6 +1,9 @@
 import React from 'react';
 import { Todo } from '..';
 import TodoComponent from './Todo';
+import { TodoAppState } from '../..';
+import { TodoAction } from '../todoReducer';
+import { connect } from 'react-redux';
 
 export interface TodoListProps {
   todos: Todo[];
@@ -26,35 +29,23 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-class VisibleTodoList extends React.Component {
-  private unsubscribe = () => {};
-
-  componentDidMount() {
-    const { store } = this.context;
-    this.unsubscribe = store.subscribe(() => this.forceUpdate());
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  render() {
-    const { store } = this.context;
-    const state = store.getState();
-    return <TodoList todos={getVisibleTodos(state.todos, state.visibilityFilter)} onTodoClick={this.onTodoItemClick} />;
-  }
-
-  private onTodoItemClick = (id: number) => {
-    const { store } = this.context;
-    store.dispatch({
-      id,
-      type: 'TOGGLE_TODO'
-    });
+const mapStateToProps = (state: TodoAppState) => {
+  return {
+    todos: getVisibleTodos(state.todos, state.visibilityFilter)
   };
+};
 
-  static contextTypes = {
-    store: ''
+const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
+  return {
+    onTodoClick: (id: number) => {
+      dispatch({
+        id,
+        type: 'TOGGLE_TODO'
+      });
+    }
   };
-}
+};
+
+const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
 
 export default VisibleTodoList;
