@@ -1,77 +1,70 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 
 const ENTER_KEY = 13;
+let nextTodoId = 0;
 
 export interface AddTodoProps {
-  value: string;
-  onInputChange: (value: string) => void;
-  onClick: () => void;
+  onClick: (text: string) => void;
 }
 
 export interface AddTodoContainerState {
   value: string;
 }
 
-const onKeyUp = (keyCode: number, addTodo: () => void) => {
-  if (keyCode === ENTER_KEY) {
-    addTodo();
-  }
-};
+function getNextTodoId() {
+  const id = nextTodoId;
+  nextTodoId += 1;
+  return id;
+}
 
-const AddTodo: React.SFC<AddTodoProps> = ({ onInputChange, onClick, value }) => (
-  <Fragment>
-    <input
-      onChange={e => onInputChange(e.currentTarget.value)}
-      onKeyUp={e => onKeyUp(e.keyCode, onClick)}
-      value={value}
-    />
-    <button onClick={onClick}>Add Todo</button>
-  </Fragment>
-);
-
-let nextTodoId = 0;
-
-class AddTodoContainer extends React.Component<{}, AddTodoContainerState> {
-  private unsubscribe = () => {};
-
+class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
   state = {
     value: ''
   };
 
-  componentDidMount() {
-    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   render() {
-    return <AddTodo onInputChange={this.onInputChange} value={this.state.value} onClick={this.onClick} />;
+    return (
+      <Fragment>
+        <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.value} />
+        <button onClick={this.onButtonClick}>Add Todo</button>
+      </Fragment>
+    );
   }
 
-  private onClick = () => {
-    this.context.store.dispatch({
-      type: 'ADD_TODO',
-      text: this.state.value,
-      id: this.getNextTodoId()
-    });
+  private onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ value: e.currentTarget.value });
+  };
+
+  private onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === ENTER_KEY) {
+      this.addTodoToList();
+    }
+  };
+
+  private onButtonClick = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    this.addTodoToList();
+  };
+
+  private addTodoToList() {
+    this.props.onClick(this.state.value);
     this.setState({ value: '' });
-  };
-
-  private onInputChange = (value: string) => {
-    this.setState({ value });
-  };
-
-  private getNextTodoId() {
-    const id = nextTodoId;
-    nextTodoId += 1;
-    return id;
   }
-
-  static contextTypes = {
-    store: ''
-  };
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onClick: (text: string) => {
+      dispatch({
+        text,
+        type: 'ADD_TODO',
+        id: getNextTodoId()
+      });
+    }
+  };
+};
+
+const AddTodoContainer = connect(null, mapDispatchToProps)(AddTodo);
 
 export default AddTodoContainer;
