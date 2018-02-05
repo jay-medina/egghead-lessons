@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-import { TodoAppState } from '../..';
-import { Store } from 'redux';
 
 const ENTER_KEY = 13;
 
@@ -8,10 +6,6 @@ export interface AddTodoProps {
   value: string;
   onInputChange: (value: string) => void;
   onClick: () => void;
-}
-
-export interface AddTodoContainerProps {
-  store: Store<TodoAppState>;
 }
 
 export interface AddTodoContainerState {
@@ -37,7 +31,7 @@ const AddTodo: React.SFC<AddTodoProps> = ({ onInputChange, onClick, value }) => 
 
 let nextTodoId = 0;
 
-class AddTodoContainer extends React.Component<AddTodoContainerProps, AddTodoContainerState> {
+class AddTodoContainer extends React.Component<{}, AddTodoContainerState> {
   private unsubscribe = () => {};
 
   state = {
@@ -45,7 +39,7 @@ class AddTodoContainer extends React.Component<AddTodoContainerProps, AddTodoCon
   };
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
@@ -57,7 +51,7 @@ class AddTodoContainer extends React.Component<AddTodoContainerProps, AddTodoCon
   }
 
   private onClick = () => {
-    this.props.store.dispatch({
+    this.context.store.dispatch({
       type: 'ADD_TODO',
       text: this.state.value,
       id: this.getNextTodoId()
@@ -74,6 +68,10 @@ class AddTodoContainer extends React.Component<AddTodoContainerProps, AddTodoCon
     nextTodoId += 1;
     return id;
   }
+
+  static contextTypes = {
+    store: ''
+  };
 }
 
 export default AddTodoContainer;

@@ -1,10 +1,7 @@
 import React from 'react';
-import { TodoAppState } from '../..';
-import { Store } from 'redux';
 
 export interface FilterLinkProps {
   filter: string;
-  store: Store<TodoAppState>;
 }
 
 export interface LinkProps {
@@ -34,13 +31,14 @@ class FilterLink extends React.Component<FilterLinkProps> {
   private unsubscribe = () => {};
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    this.unsubscribe = this.context.store.subscribe(() => this.forceUpdate());
   }
   componentWillUnmount() {
     this.unsubscribe();
   }
   render() {
-    const { filter, children, store } = this.props;
+    const { filter, children } = this.props;
+    const { store } = this.context;
     const state = store.getState();
     return (
       <Link
@@ -56,6 +54,10 @@ class FilterLink extends React.Component<FilterLinkProps> {
       </Link>
     );
   }
+
+  static contextTypes = {
+    store: ''
+  };
 }
 
 export default FilterLink;

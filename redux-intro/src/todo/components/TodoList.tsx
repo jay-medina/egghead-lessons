@@ -1,16 +1,10 @@
 import React from 'react';
 import { Todo } from '..';
 import TodoComponent from './Todo';
-import { TodoAppState } from '../..';
-import { Store } from 'redux';
 
 export interface TodoListProps {
   todos: Todo[];
   onTodoClick: (id: number) => void;
-}
-
-export interface VisibleTodoListProps {
-  store: Store<TodoAppState>;
 }
 
 const getVisibleTodos = (todos: Todo[], filter: string) => {
@@ -32,11 +26,12 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-class VisibleTodoList extends React.Component<VisibleTodoListProps> {
+class VisibleTodoList extends React.Component {
   private unsubscribe = () => {};
 
   componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
+    const { store } = this.context;
+    this.unsubscribe = store.subscribe(() => this.forceUpdate());
   }
 
   componentWillUnmount() {
@@ -44,15 +39,21 @@ class VisibleTodoList extends React.Component<VisibleTodoListProps> {
   }
 
   render() {
-    const state = this.props.store.getState();
+    const { store } = this.context;
+    const state = store.getState();
     return <TodoList todos={getVisibleTodos(state.todos, state.visibilityFilter)} onTodoClick={this.onTodoItemClick} />;
   }
 
   private onTodoItemClick = (id: number) => {
-    this.props.store.dispatch({
+    const { store } = this.context;
+    store.dispatch({
       id,
       type: 'TOGGLE_TODO'
     });
+  };
+
+  static contextTypes = {
+    store: ''
   };
 }
 
