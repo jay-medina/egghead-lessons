@@ -48,13 +48,11 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
-  return {
-    onClick: (text: string) => {
-      dispatch(addTodo(text));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
+  onClick(text: string) {
+    dispatch(addTodo(text));
+  }
+});
 
 const AddTodoContainer = connect(null, mapDispatchToProps)(AddTodo);
 

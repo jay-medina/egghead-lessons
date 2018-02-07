@@ -30,19 +30,15 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-const mapStateToProps = (state: TodoAppState) => {
-  return {
-    todos: getVisibleTodos(state.todos, state.visibilityFilter)
-  };
-};
+const mapStateToProps = (state: TodoAppState) => ({
+  todos: getVisibleTodos(state.todos, state.visibilityFilter)
+});
 
-const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
-  return {
-    onTodoClick: (id: number) => {
-      dispatch(toggleTodo(id));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
+  onTodoClick(id: number) {
+    dispatch(toggleTodo(id));
+  }
+});
 
 const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
 
