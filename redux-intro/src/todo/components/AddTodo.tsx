@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { TodoAction } from '../todoReducer';
+import { addTodo } from './actionCreators';
 
 const ENTER_KEY = 13;
-let nextTodoId = 0;
 
 export interface AddTodoProps {
   onClick: (text: string) => void;
@@ -11,12 +11,6 @@ export interface AddTodoProps {
 
 export interface AddTodoContainerState {
   value: string;
-}
-
-function getNextTodoId() {
-  const id = nextTodoId;
-  nextTodoId += 1;
-  return id;
 }
 
 class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
@@ -57,11 +51,7 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
 const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
   return {
     onClick: (text: string) => {
-      dispatch({
-        text,
-        type: 'ADD_TODO',
-        id: getNextTodoId()
-      });
+      dispatch(addTodo(text));
     }
   };
 };
