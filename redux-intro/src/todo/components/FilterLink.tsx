@@ -2,6 +2,7 @@ import React from 'react';
 import { TodoAppState } from '../..';
 import { VisibilityFilterAction } from '../visibilityFilterReducer';
 import { connect } from 'react-redux';
+import { setVisibilityFilter } from './actionCreators';
 
 export interface FilterLinkProps {
   filter: string;
@@ -30,22 +31,15 @@ const Link: React.SFC<LinkProps> = ({ active, children, onClick }) => {
   );
 };
 
-const mapStateToProps = (state: TodoAppState, ownProps: FilterLinkProps) => {
-  return {
-    active: ownProps.filter === state.visibilityFilter
-  };
-};
+const mapStateToProps = (state: TodoAppState, ownProps: FilterLinkProps) => ({
+  active: ownProps.filter === state.visibilityFilter
+});
 
-const mapDispatchToProps = (dispatch: (action: VisibilityFilterAction) => void, ownProps: FilterLinkProps) => {
-  return {
-    onClick: () => {
-      dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter: ownProps.filter
-      });
-    }
-  };
-};
+const mapDispatchToProps = (dispatch: (action: VisibilityFilterAction) => void, ownProps: FilterLinkProps) => ({
+  onClick() {
+    dispatch(setVisibilityFilter(ownProps.filter));
+  }
+});
 
 const FilterLink = connect(mapStateToProps, mapDispatchToProps)(Link);
 

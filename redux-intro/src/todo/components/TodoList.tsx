@@ -4,6 +4,7 @@ import TodoComponent from './Todo';
 import { TodoAppState } from '../..';
 import { TodoAction } from '../todoReducer';
 import { connect } from 'react-redux';
+import { toggleTodo } from './actionCreators';
 
 export interface TodoListProps {
   todos: Todo[];
@@ -29,22 +30,15 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-const mapStateToProps = (state: TodoAppState) => {
-  return {
-    todos: getVisibleTodos(state.todos, state.visibilityFilter)
-  };
-};
+const mapStateToProps = (state: TodoAppState) => ({
+  todos: getVisibleTodos(state.todos, state.visibilityFilter)
+});
 
-const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => {
-  return {
-    onTodoClick: (id: number) => {
-      dispatch({
-        id,
-        type: 'TOGGLE_TODO'
-      });
-    }
-  };
-};
+const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
+  onTodoClick(id: number) {
+    dispatch(toggleTodo(id));
+  }
+});
 
 const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
 
