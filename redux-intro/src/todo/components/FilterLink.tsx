@@ -1,10 +1,10 @@
 import React from 'react';
 import { TodoAppState } from '../..';
-import { Store } from 'redux';
+import { VisibilityFilterAction } from '../visibilityFilterReducer';
+import { connect } from 'react-redux';
 
 export interface FilterLinkProps {
   filter: string;
-  store: Store<TodoAppState>;
 }
 
 export interface LinkProps {
@@ -30,32 +30,23 @@ const Link: React.SFC<LinkProps> = ({ active, children, onClick }) => {
   );
 };
 
-class FilterLink extends React.Component<FilterLinkProps> {
-  private unsubscribe = () => {};
+const mapStateToProps = (state: TodoAppState, ownProps: FilterLinkProps) => {
+  return {
+    active: ownProps.filter === state.visibilityFilter
+  };
+};
 
-  componentDidMount() {
-    this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate());
-  }
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-  render() {
-    const { filter, children, store } = this.props;
-    const state = store.getState();
-    return (
-      <Link
-        active={filter === state.visibilityFilter}
-        onClick={() =>
-          store.dispatch({
-            type: 'SET_VISIBILITY_FILTER',
-            filter
-          })
-        }
-      >
-        {children}
-      </Link>
-    );
-  }
-}
+const mapDispatchToProps = (dispatch: (action: VisibilityFilterAction) => void, ownProps: FilterLinkProps) => {
+  return {
+    onClick: () => {
+      dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter: ownProps.filter
+      });
+    }
+  };
+};
+
+const FilterLink = connect(mapStateToProps, mapDispatchToProps)(Link);
 
 export default FilterLink;
