@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 export interface TodoAppState {
   todos: Todo[];
-  visibilityFilter: string;
+  visibilityFilter?: string;
 }
 
 const todoReducer = combineReducers<TodoAppState>({
@@ -17,7 +17,17 @@ const todoReducer = combineReducers<TodoAppState>({
 
 const devtoolExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
-const store = createStore<TodoAppState>(todoReducer, devtoolExtension && devtoolExtension());
+const persistedState = {
+  todos: [
+    {
+      id: 0,
+      text: 'Welcome back!',
+      completed: false
+    }
+  ]
+};
+
+const store = createStore<TodoAppState>(todoReducer, persistedState, devtoolExtension && devtoolExtension());
 
 ReactDOM.render(
   <Provider store={store}>
