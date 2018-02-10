@@ -7,7 +7,7 @@ export const loadState = (): TodoAppState | undefined => {
       return undefined;
     }
     return JSON.parse(serializedState);
-  } catch {
+  } catch (e) {
     return undefined;
   }
 };
@@ -16,5 +16,7 @@ export const saveState = (state: Partial<TodoAppState>) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('state', serializedState);
-  } catch {}
+  } catch (e) {
+    /** no empty */
+  }
 };

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { TodoAction } from '../todoReducer';
-import { addTodo } from './actionCreators';
+import { addTodo } from './actions';
 
 const ENTER_KEY = 13;
 
@@ -14,11 +14,11 @@ export interface AddTodoContainerState {
 }
 
 class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
-  state = {
-    value: ''
+  public state = {
+    value: '',
   };
 
-  render() {
+  public render() {
     return (
       <Fragment>
         <input onChange={this.onInputChange} onKeyUp={this.onKeyUp} value={this.state.value} />
@@ -29,18 +29,18 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
 
   private onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: e.currentTarget.value });
-  };
+  }
 
   private onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === ENTER_KEY) {
       this.addTodoToList();
     }
-  };
+  }
 
   private onButtonClick = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
     this.addTodoToList();
-  };
+  }
 
   private addTodoToList() {
     this.props.onClick(this.state.value);
@@ -51,7 +51,7 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
 const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
   onClick(text: string) {
     dispatch(addTodo(text));
-  }
+  },
 });
 
 const AddTodoContainer = connect(null, mapDispatchToProps)(AddTodo);

@@ -14,8 +14,8 @@ describe('VisibilityFilterReducer', () => {
   describe('setting the filter', () => {
     beforeEach(() => {
       stateAfter = visibilityFilter('SHOW_ALL', {
+        filter: 'SHOW_VISIBLE',
         type: 'SET_VISIBILITY_FILTER',
-        filter: 'SHOW_VISIBLE'
       });
     });
 
@@ -27,9 +27,9 @@ describe('VisibilityFilterReducer', () => {
   describe('when the action type is unknown', () => {
     beforeEach(() => {
       stateAfter = visibilityFilter('SHOW_ALL', {
-        type: '123',
         filter: 'meow',
-      } as any);
+        type: '123',
+      });
     });
 
     it('returns back the previous state', () => {

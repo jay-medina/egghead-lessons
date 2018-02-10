@@ -5,7 +5,10 @@ export interface VisibilityFilterAction {
   filter: string;
 }
 
-export const visibilityFilter = (state = 'SHOW_ALL', action: VisibilityFilterAction | AnyAction) => {
+export const visibilityFilter = (
+  state = 'SHOW_ALL',
+  action: VisibilityFilterAction | AnyAction,
+) => {
   switch (action.type) {
     case 'SET_VISIBILITY_FILTER':
       return (action as VisibilityFilterAction).filter;
