@@ -4,10 +4,13 @@ import { createStore, combineReducers } from 'redux';
 import { todos, visibilityFilter, Todo } from './todo';
 import TodoApp from './todo/components/TodoApp';
 import { Provider } from 'react-redux';
+import { loadState, saveState } from './todo/util';
+
+export interface StoreCreator {}
 
 export interface TodoAppState {
   todos: Todo[];
-  visibilityFilter?: string;
+  visibilityFilter: string;
 }
 
 const todoReducer = combineReducers<TodoAppState>({
@@ -17,17 +20,15 @@ const todoReducer = combineReducers<TodoAppState>({
 
 const devtoolExtension = (window as any).__REDUX_DEVTOOLS_EXTENSION__;
 
-const persistedState = {
-  todos: [
-    {
-      id: 0,
-      text: 'Welcome back!',
-      completed: false
-    }
-  ]
-};
+const persistedState = loadState();
 
 const store = createStore<TodoAppState>(todoReducer, persistedState, devtoolExtension && devtoolExtension());
+
+store.subscribe(() => {
+  saveState({
+    todos: store.getState().todos,
+  });
+});
 
 ReactDOM.render(
   <Provider store={store}>

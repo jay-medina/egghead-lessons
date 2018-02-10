@@ -9,7 +9,7 @@ export interface FilterLinkProps {
 }
 
 export interface LinkProps {
-  active: boolean | undefined;
+  active: boolean;
   onClick: () => void;
 }
 

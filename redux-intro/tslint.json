@@ -1,0 +1,9 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "max-line-length": {
+      "options": [80]
+    },
+    "quotemark": [true, "single", "jsx-double"]
+  }
+}
