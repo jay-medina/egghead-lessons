@@ -1,3 +1,4 @@
+import { throttle } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -26,11 +27,11 @@ const store = createStore<TodoAppState>(
   devtoolExtension && devtoolExtension(),
 );
 
-store.subscribe(() => {
+store.subscribe(throttle(() => {
   saveState({
     todos: store.getState().todos,
   });
-});
+}, 1000));
 
 ReactDOM.render(
   <Provider store={store}>
