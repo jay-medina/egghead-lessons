@@ -1,25 +1,18 @@
+import { v4 } from 'node-uuid';
 import { VisibilityFilterAction } from '../visibilityFilterReducer';
 
 export const setVisibilityFilter = (filter: string): VisibilityFilterAction => ({
+  filter,
   type: 'SET_VISIBILITY_FILTER',
-  filter
 });
 
-let nextTodoId = 0;
-
-function getNextTodoId() {
-  const id = nextTodoId;
-  nextTodoId += 1;
-  return id;
-}
-
 export const addTodo = (text: string) => ({
+  id: v4(),
   text,
   type: 'ADD_TODO',
-  id: getNextTodoId()
-})
+});
 
 export const toggleTodo = (id: number) => ({
   id,
-  type: 'TOGGLE_TODO'
-})
+  type: 'TOGGLE_TODO',
+});
