@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Todo } from '..';
-import { TodoAppState } from '../..';
-import { TodoAction } from '../todoReducer';
+import { TodoAppState } from '../reducers';
+import { Todo, TodoAction } from '../reducers/todoReducer';
 import { toggleTodo } from './actions';
 import TodoComponent from './Todo';
 

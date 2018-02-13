@@ -1,5 +1,5 @@
 import { v4 } from 'node-uuid';
-import { VisibilityFilterAction } from '../visibilityFilterReducer';
+import { VisibilityFilterAction } from '../reducers/visibilityFilterReducer';
 
 export const setVisibilityFilter = (filter: string): VisibilityFilterAction => ({
   filter,

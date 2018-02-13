@@ -1,4 +1,4 @@
-import { TodoAppState } from '..';
+import { TodoAppState } from './reducers';
 
 export const loadState = (): TodoAppState | undefined => {
   try {
