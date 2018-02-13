@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TodoAppState } from '../..';
-import { VisibilityFilterAction } from '../visibilityFilterReducer';
+import { TodoAppState } from '../reducers';
+import { VisibilityFilterAction } from '../reducers/visibilityFilterReducer';
 import { setVisibilityFilter } from './actions';
 
 export interface FilterLinkProps {
