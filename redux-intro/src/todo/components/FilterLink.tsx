@@ -1,49 +1,28 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { TodoAppState } from '../reducers';
-import { VisibilityFilterAction } from '../reducers/visibilityFilterReducer';
-import { setVisibilityFilter } from './actions';
+import { NavLink } from 'react-router-dom';
 
 export interface FilterLinkProps {
-  filter: string;
+  filter: 'all' | 'active' | 'completed';
 }
 
-export interface LinkProps {
-  active: boolean;
-  onClick: () => void;
-}
-
-const Link: React.SFC<LinkProps> = ({ active, children, onClick }) => {
-  if (active) {
-    return <span>{children}</span>;
+const getNavLink = (filter: FilterLinkProps['filter']) => {
+  if (filter === 'all') {
+    return '/';
   }
-
-  return (
-    <a
-      href="#"
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
-    >
-      {children}
-    </a>
-  );
+  return `/${filter}`;
 };
 
-const mapStateToProps = (state: TodoAppState, ownProps: FilterLinkProps) => ({
-  active: ownProps.filter === state.visibilityFilter,
-});
-
-const mapDispatchToProps = (
-  dispatch: (action: VisibilityFilterAction) => void,
-  ownProps: FilterLinkProps,
-) => ({
-  onClick() {
-    dispatch(setVisibilityFilter(ownProps.filter));
-  },
-});
-
-const FilterLink = connect(mapStateToProps, mapDispatchToProps)(Link);
+const FilterLink: React.SFC<FilterLinkProps> = ({ filter, children }) => (
+  <NavLink
+    exact
+    to={getNavLink(filter)}
+    activeStyle={{
+      color: '#000',
+      textDecoration: 'none',
+    }}
+  >
+    {children}
+  </NavLink>
+);
 
 export default FilterLink;
