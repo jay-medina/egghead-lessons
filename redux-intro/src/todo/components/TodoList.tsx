@@ -12,12 +12,14 @@ export interface TodoListProps {
 
 const getVisibleTodos = (todos: Todo[], filter: string) => {
   switch (filter) {
-    case 'SHOW_ALL':
+    case 'all':
       return todos;
-    case 'SHOW_COMPLETED':
+    case 'completed':
       return todos.filter((todo) => todo.completed);
-    default:
+    case 'active':
       return todos.filter((todo) => !todo.completed);
+    default:
+      throw new Error(`Unknown filter: ${filter}`);
   }
 };
 
@@ -34,8 +36,12 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-const mapStateToProps = (state: TodoAppState) => ({
-  todos: getVisibleTodos(state.todos, state.visibilityFilter),
+export interface VisibleTodoListProps {
+  filter: string;
+}
+
+const mapStateToProps = (state: TodoAppState, ownProps: VisibleTodoListProps) => ({
+  todos: getVisibleTodos(state.todos, ownProps.filter),
 });
 
 const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({

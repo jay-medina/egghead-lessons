@@ -33,8 +33,9 @@ function todo(state: Todo | null, action: TodoAction) {
       const toggleAction = action as ToggleTodoAction;
       if (toggleState.id === toggleAction.id) {
         return {
-          ...toggleState,
           completed: !toggleState.completed,
+          id: toggleState.id,
+          text: toggleState.text,
         };
       }
       return toggleState;
@@ -46,7 +47,7 @@ function todo(state: Todo | null, action: TodoAction) {
 export const todos = (state: Todo[] = [], action: TodoAction | Action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [ ...state, todo(null, action) ];
+      return [...state, todo(null, action)];
     case 'TOGGLE_TODO':
       return state.map((t) => todo(t, action as ToggleTodoAction));
     default:

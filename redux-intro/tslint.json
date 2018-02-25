@@ -2,9 +2,9 @@
   "extends": "tslint:recommended",
   "rules": {
     "max-line-length": {
-      "options": [ 100 ]
+      "options": [100]
     },
-    "quotemark": [ true, "single", "jsx-double" ],
+    "quotemark": [true, "single", "jsx-double"],
     "interface-name": false
   }
 }
