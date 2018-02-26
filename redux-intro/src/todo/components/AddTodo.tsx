@@ -29,18 +29,18 @@ class AddTodo extends React.Component<AddTodoProps, AddTodoContainerState> {
 
   private onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: e.currentTarget.value });
-  };
+  }
 
   private onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === ENTER_KEY) {
       this.addTodoToList();
     }
-  };
+  }
 
   private onButtonClick = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
     this.addTodoToList();
-  };
+  }
 
   private addTodoToList() {
     this.props.onClick(this.state.value);
