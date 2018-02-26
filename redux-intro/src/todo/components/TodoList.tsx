@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { TodoAppState } from '../reducers';
 import { Todo, TodoAction } from '../reducers/todoReducer';
 import { toggleTodo } from './actions';
@@ -36,12 +37,12 @@ const TodoList: React.SFC<TodoListProps> = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-export interface VisibleTodoListProps {
-  filter: string;
+export interface MatchParams {
+  filter?: string;
 }
 
-const mapStateToProps = (state: TodoAppState, ownProps: VisibleTodoListProps) => ({
-  todos: getVisibleTodos(state.todos, ownProps.filter),
+const mapStateToProps = (state: TodoAppState, { match }: RouteComponentProps<MatchParams>) => ({
+  todos: getVisibleTodos(state.todos, match.params.filter || 'all'),
 });
 
 const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
@@ -50,6 +51,6 @@ const mapDispatchToProps = (dispatch: (action: TodoAction) => void) => ({
   },
 });
 
-const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
+const VisibleTodoList = withRouter(connect(mapStateToProps, mapDispatchToProps)(TodoList));
 
 export default VisibleTodoList;
