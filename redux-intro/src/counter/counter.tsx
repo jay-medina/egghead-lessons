@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 export interface CounterProps {
-  state: number;
+  count: number;
   onIncrement: () => void;
   onDecrement: () => void;
 }
-const Counter: React.SFC<CounterProps> = ({ state, onDecrement, onIncrement }) => (
+const Counter: React.SFC<CounterProps> = ({ count, onDecrement, onIncrement }) => (
   <div>
-    <h1>{state}</h1>
+    <h1>{count}</h1>
     <button onClick={onIncrement}>+</button>
     <button onClick={onDecrement}>-</button>
   </div>

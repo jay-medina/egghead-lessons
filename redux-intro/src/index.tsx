@@ -1,8 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './todo/components/Root';
-import configureStore from './todo/configureStore';
+import { Provider } from 'react-redux';
+import configureStore from './counter/configureStore';
+import CounterList from './counter/list';
 
 const store = configureStore();
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+function render() {
+  ReactDOM.render(
+    <Provider store={store}>
+      <CounterList />
+    </Provider>,
+    document.getElementById('root'),
+  );
+}
+
+render();
+
+store.subscribe(render);
