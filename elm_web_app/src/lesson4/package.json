@@ -1,0 +1,13 @@
+{
+  "name": "lesson4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server",
+    "start:elm": "elm reactor -p 8080",
+    "watch": "tsc --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
