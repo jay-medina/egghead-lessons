@@ -6,18 +6,18 @@ import Html.Attributes exposing (style)
 
 type alias Ship =
     { name : String
-    , model : String
     , cost : Int
     }
 
 
+ships : List Ship
 ships =
     [ { name = "X-wing", cost = 149999 }
     , { name = "Millennium Falcon", cost = 100000 }
     , { name = "Death Star", cost = 1000000000000 }
     ]
 
-
+renderShip: Ship -> Html msg
 renderShip ship =
     li []
         [ text ship.name
@@ -25,7 +25,7 @@ renderShip ship =
         , b [] [ text <| toString ship.cost ]
         ]
 
-
+renderShips: Html msg
 renderShips =
     div
         [ style

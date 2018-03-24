@@ -9,5 +9,13 @@
     "watch": "tsc --watch --pretty"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4"
+  }
 }
