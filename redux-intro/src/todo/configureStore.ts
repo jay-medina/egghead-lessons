@@ -1,6 +1,5 @@
 import { throttle } from 'lodash';
-import { Store } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, Store } from 'redux';
 import todoReducer, { TodoAppState } from './reducers';
 import { loadState, saveState } from './util';
 

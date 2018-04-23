@@ -35,19 +35,19 @@ const CounterList: React.SFC<CounterProps> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<CounterListState>) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   return {
     onAddCounter() {
-      dispatch<Action>(addCounter());
+      dispatch(addCounter());
     },
     onRemoveCounter(index: number) {
-      dispatch<Action>(removeCounter(index));
+      dispatch(removeCounter(index));
     },
     onIncrementCounter(indexOfCounter: number) {
-      dispatch<Action>(incrementCounter(indexOfCounter));
+      dispatch(incrementCounter(indexOfCounter));
     },
     onDecrementCounter(indexOfCounter: number) {
-      dispatch<Action>(decrementCounter(indexOfCounter));
+      dispatch(decrementCounter(indexOfCounter));
     },
   };
 };
