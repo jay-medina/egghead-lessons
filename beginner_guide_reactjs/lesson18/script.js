@@ -16,7 +16,7 @@ class UserCompany extends React.Component {
         }`
       },
       headers: {
-        Authorization: `bearer 990653032875d8c6ff6cf2d37b3b2905dfe2181f`
+        Authorization: `bearer token`
       }
     }).then(response => {
       this.setState({
