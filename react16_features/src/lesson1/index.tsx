@@ -5,20 +5,10 @@ type User = {
   name: string;
 };
 
-const Profile = ({ user }: { user: User | null }) => (
-  <div>Name: {user!.name}</div>
-);
-
-interface AppState {
-  user: User | null;
-  hasError: boolean;
-}
-
-class App extends React.Component<{}, AppState> {
+class MyErrorBoundary extends React.Component<{}, { hasError: boolean }> {
   constructor(props = {}) {
     super(props);
     this.state = {
-      user: { name: 'Jose' },
       hasError: false
     };
   }
@@ -28,19 +18,42 @@ class App extends React.Component<{}, AppState> {
     sendToErrorReporting(error, errorInfo);
   }
 
-  updateUser = () => {
-    this.setState(state => ({ ...state, user: null }));
-  };
-
   render() {
     if (this.state.hasError) {
       return 'Sorry, something went wrong';
     }
 
+    return this.props.children;
+  }
+}
+
+const Profile = ({ user }: { user: User | null }) => (
+  <h2>Name: {user!.name}</h2>
+);
+
+interface AppState {
+  user: User | null;
+}
+
+class App extends React.Component<{}, AppState> {
+  constructor(props = {}) {
+    super(props);
+    this.state = {
+      user: { name: 'Jose' }
+    };
+  }
+
+  updateUser = () => {
+    this.setState(state => ({ ...state, user: null }));
+  };
+
+  render() {
     return (
       <div>
-        <Profile user={this.state.user} />
-        <button onClick={this.updateUser}>Update</button>
+        <MyErrorBoundary>
+          <Profile user={this.state.user} />
+          <button onClick={this.updateUser}>Update</button>
+        </MyErrorBoundary>
       </div>
     );
   }
