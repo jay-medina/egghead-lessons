@@ -1,4 +1,5 @@
 import React from 'react';
+import { sendToErrorReporting } from './errorReport';
 
 type User = {
   name: string;
@@ -22,8 +23,9 @@ class App extends React.Component<{}, AppState> {
     };
   }
 
-  componentDidCatch() {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState(state => ({ ...state, hasError: true }));
+    sendToErrorReporting(error, errorInfo);
   }
 
   updateUser = () => {
