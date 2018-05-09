@@ -6,7 +6,7 @@ const Comment: React.SFC<{ text: string }> = ({ text }) => {
     .replace(':(', '😞')
     .replace(':D', '😁');
 
-  return <span>{emojiText}</span>;
+  return <>{emojiText}</>;
 };
 
 const App: React.SFC = () => (
