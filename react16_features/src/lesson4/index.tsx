@@ -2,15 +2,31 @@ import React from 'react';
 import './index.css';
 import ReactDOM from 'react-dom';
 
+class Overlay extends React.Component {
+  private overlayContainer: HTMLDivElement;
+
+  constructor(props: {}) {
+    super(props);
+    this.overlayContainer = document.createElement('div');
+    document.body.appendChild(this.overlayContainer);
+  }
+  render() {
+    return ReactDOM.createPortal(
+      <div className="overlay">{this.props.children}</div>,
+      this.overlayContainer
+    );
+  }
+}
+
 type AppState = {
-  element: null | HTMLDivElement;
+  overlay: boolean;
 };
 
 class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      element: null
+      overlay: false
     };
   }
   render() {
@@ -24,16 +40,15 @@ class App extends React.Component<{}, AppState> {
   }
 
   private createPortalOnClick = () => {
-    const element = document.createElement('div');
-    document.body.appendChild(element);
-    this.setState({ element });
+    this.setState({ overlay: true });
   };
 
   private getPortalView = () => {
-    if (this.state.element) {
-      return ReactDOM.createPortal(
-        <div className="overlay">Welcome</div>,
-        this.state.element
+    if (this.state.overlay) {
+      return (
+        <Overlay>
+          <div>Welcome</div>
+        </Overlay>
       );
     }
 
