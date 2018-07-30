@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (text)
+import List
 
 
 type alias Person =
@@ -9,34 +10,34 @@ type alias Person =
     }
 
 
-people : List Person
 people =
     [ { name = "Jose", age = 2931 }
-    , { name = "Gimli", age = 139 }
+    , { name = "meow", age = 139 }
     ]
 
 
 names : List Person -> List String
-names peeps =
-    List.map .name peeps
-
-
-nameExist : String -> Person -> Maybe Person -> Maybe Person
-nameExist name peep memo =
-    case memo of
-        Just _ ->
-            memo
-
-        Nothing ->
-            if peep.name == name then
-                Just peep
-            else
-                Nothing
+names =
+    List.map (\peep -> peep.name)
 
 
 findPerson : String -> List Person -> Maybe Person
-findPerson name peeps =
-    List.foldl (nameExist name) Nothing peeps
+findPerson name =
+    let
+        isPersonInList peep memo =
+            case memo of
+                Just _ ->
+                    memo
+
+                Nothing ->
+                    if peep.name == name then
+                        Just peep
+                    else
+                        Nothing
+    in
+    List.foldl
+        isPersonInList
+        Nothing
 
 
 main : Html.Html msg
