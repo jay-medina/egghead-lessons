@@ -9,10 +9,10 @@ interface Ship {
 const ships = [
   { name: 'X-wing', cost: 149999 },
   { name: 'Millennium Falcon', cost: 100000 },
-  { name: 'Death Star', cost: 1000000000000 }
+  { name: 'Death Star', cost: 1000000000000 },
 ];
 
-const renderShip: React.SFC<Ship> = ship => (
+const RenderShip: React.SFC<{ ship: Ship }> = ({ ship }) => (
   <li>
     <span>{ship.name}</span>
     <span>,</span>
@@ -20,14 +20,12 @@ const renderShip: React.SFC<Ship> = ship => (
   </li>
 );
 
-const RenderShips = () => (
-  <div style={{ padding: '1em' }}>
+const RenderShips: React.SFC<{ ships: Ship[] }> = ({ ships }) => (
+  <div style={{ fontFamily: '-apply-system', padding: '1em' }}>
     <h1>Ships</h1>
-    <ul>{ships.map(renderShip)}</ul>
+    <ul>{ships.map((ship, i) => <RenderShip key={i} ship={ship} />)}</ul>
   </div>
 );
 
-function main() {
-  const mainDom = document.getElementById('#main');
-  ReactDOM.render(<RenderShips />, mainDom);
-}
+const mainDom = document.getElementById('root');
+ReactDOM.render(<RenderShips ships={ships} />, mainDom);

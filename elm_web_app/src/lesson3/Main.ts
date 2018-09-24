@@ -1,16 +1,20 @@
-const politely = (text: string) => `Excuse me, ${text}`;
+type Ask = (a: string) => (b: string) => string;
 
-const ask = (thing: string) => (place: string) =>
-  `is there a ${thing} in the ${place}?`;
+type Politely = (a: string) => string;
 
-const askPolitelyAboutFish = (place: string) => {
-  const aboutFish = ask("fish")(place);
+type AskPolitelyAboutFish = (a: string) => string;
 
-  return politely(aboutFish);
-};
+// ---
 
-const root = document.getElementById("root");
+const politely: Politely = phrase => 'Excuse me, ' + phrase;
+
+const ask: Ask = thing => place => 'is there a ' + thing + ' in the ' + place + '?';
+
+const askPolitelyAboutFish: AskPolitelyAboutFish = (a: string) => politely(ask('Fish')(a));
+
+const root = document.getElementById('root');
 
 if (root) {
-  root.innerText = askPolitelyAboutFish("car");
+  root.innerText = askPolitelyAboutFish('car');
+  // root.innerText = politely(ask('Fish')('House'));
 }

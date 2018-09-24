@@ -4,8 +4,8 @@ import Html exposing (text)
 
 
 politely : String -> String
-politely text =
-    "Excuse me, " ++ text
+politely phrase =
+    "Excuse me, " ++ phrase
 
 
 ask : String -> String -> String
@@ -13,10 +13,11 @@ ask thing place =
     "is there a " ++ thing ++ " in the " ++ place ++ "?"
 
 
-askPolitelyAboutFish =
+askPolitelyABoutFish : String -> String
+askPolitelyABoutFish =
     politely << ask "fish"
 
 
+main : Html.Html msg
 main =
-    text <|
-        askPolitelyAboutFish "car"
+    text <| askPolitelyABoutFish "house"

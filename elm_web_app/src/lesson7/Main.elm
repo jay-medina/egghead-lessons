@@ -8,21 +8,15 @@ numbers =
     [ 1, 2, 3, 4, 5 ]
 
 
-
--- printNumbers : Int -> Html msg
--- printNumbers num =
---     div [] [ text <| toString num ]
-
-
-printThing : thing -> Html msg
-printThing thing =
-    div [] [ text <| toString thing ]
+printThing : a -> Html msg
+printThing i =
+    ul [] [ text <| toString i ]
 
 
 fruits =
-    [ { name = "Orange" }, { name = "Bananas" } ]
+    [ { name = "Orange" }, { name = "Banana" } ]
 
 
 main : Html.Html msg
 main =
-    div [ style [ ( "padding", "2rem" ) ] ] (List.map printThing fruits)
+    ul [] (List.map printThing fruits)

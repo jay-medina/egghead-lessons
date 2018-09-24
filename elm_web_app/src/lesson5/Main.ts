@@ -1,42 +1,38 @@
 namespace Main {
-  interface Person {
+  type Person = {
     name: string;
     age: number;
-  }
-
-  const people = [{ name: 'Jose', age: 2931 }, { name: 'Gimli', age: 139 }];
-
-  // type Names = (peeps: Person[]) => string[];
-
-  // const names: Names = peeps => peeps.map(p => p.name);
-
-  type NameExist = (
-    name: String
-  ) => (memo: Person | null, peep: Person) => Person | null;
-
-  const nameExist: NameExist = name => (memo, peep) => {
-    if (memo !== null) return memo;
-
-    if (peep.name === name) {
-      return peep;
-    }
-
-    return null;
   };
 
-  type FindPerson = (name: string) => (peeps: Person[]) => Person | null;
+  const people: Person[] = [{ name: 'Jose', age: 2931 }, { name: 'meow', age: 139 }];
 
-  const findPerson: FindPerson = name => peeps =>
-    peeps.reduce(nameExist(name), null);
+  // type Names = (p: Person[]) => string[];
+  // const names: Names = p => p.map(peep => peep.name);
 
-  const root = document.getElementById('root');
+  type FindPerson = (n: string) => (p: Person[]) => Person | undefined;
+  const findPerson: FindPerson = name => people => {
+    const isPersonInList = (memo: Person | undefined, nextPerson: Person) => {
+      if (memo) {
+        return memo;
+      }
 
-  if (root) {
-    const person = findPerson('Same')(people);
-    if (person) {
-      root.innerText = JSON.stringify(person);
-    } else {
-      root.innerText = 'Nothing';
-    }
+      if (nextPerson.name === name) {
+        return nextPerson;
+      }
+
+      return undefined;
+    };
+
+    return people.reduce(isPersonInList, undefined);
+  };
+
+  const root = document.getElementById('root')!;
+
+  const person = findPerson('Jose')(people);
+
+  if (person) {
+    root.innerText = JSON.stringify(person);
+  } else {
+    root.innerText = 'Nothing';
   }
 }
