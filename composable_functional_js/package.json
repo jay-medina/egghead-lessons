@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": ""
+    "compile": "tsc --outDir ./dist",
+    "watch-ts": "tsc --watch --outDir ./dist",
+    "start": "nodemon -w ./dist ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   }
 }
