@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "tsc --outDir ./dist",
     "watch-ts": "tsc --watch --outDir ./dist",
-    "start": "nodemon -w ./dist ./dist/index.js"
+    "start": "nodemon -w ./dist"
   },
   "author": "",
   "license": "ISC",
