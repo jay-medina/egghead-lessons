@@ -1,0 +1,17 @@
+{
+  "name": "composable_functional_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc --outDir ./dist",
+    "watch-ts": "tsc --watch --outDir ./dist",
+    "start": "nodemon -w ./dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^10.11.3",
+    "typescript": "^3.1.1"
+  }
+}
