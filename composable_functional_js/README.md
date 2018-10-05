@@ -33,3 +33,5 @@ const Sum = x => ({
 
 Sum.empty = () => Sum(0); // Monoid
 ```
+
+### Flatmap
